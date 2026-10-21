@@ -4,8 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>さつみ建築 | Dream It. Build It. Live It.</title>
-<meta name="description" content="長野県中信地域のリフォーム・増築・造作工事。大工が直接相談から施工まで対応。小さな木の離れ Essentia Rise もご提案します。">
+<meta name="description" content="住まいの改修と木工事、小さな木の建築構想 Essentia Rise を紹介する、さつみ建築のサイト準備版です。">
 <meta name="theme-color" content="#0a0a0a">
+<meta name="robots" content="noindex,nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Serif+JP:wght@300;400;600&family=Noto+Sans+JP:wght@300;400&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -59,6 +60,14 @@ body::before{
 ::-webkit-scrollbar-track{background:var(--black);}
 ::-webkit-scrollbar-thumb{background:var(--gold);}
 
+.skip-link{
+  position:fixed;top:8px;left:8px;z-index:10000;
+  padding:10px 14px;background:var(--white);color:var(--black);
+  font-family:'Noto Sans JP',sans-serif;font-size:0.78rem;
+  transform:translateY(-160%);transition:transform 0.2s;
+}
+.skip-link:focus{transform:translateY(0);}
+
 /* ============================================================
    CURSOR
    ============================================================ */
@@ -69,8 +78,9 @@ body::before{
   position:fixed;
   pointer-events:none;
   z-index:9999;
-  transition:transform 0.15s ease;
+  transition:transform 0.15s ease,opacity 0.2s ease;
   transform:translate(-50%,-50%);
+  opacity:0;
 }
 .cursor-ring{
   width:36px;height:36px;
@@ -79,8 +89,9 @@ body::before{
   position:fixed;
   pointer-events:none;
   z-index:9998;
-  transition:transform 0.4s ease,width 0.3s,height 0.3s;
+  transition:transform 0.4s ease,width 0.3s,height 0.3s,opacity 0.2s ease;
   transform:translate(-50%,-50%);
+  opacity:0;
 }
 
 /* ============================================================
@@ -122,6 +133,7 @@ nav.scrolled{
   text-transform:uppercase;
 }
 .nav-links a:hover{color:var(--gold);}
+.nav-links a:focus-visible,.nav-logo:focus-visible,.footer-links a:focus-visible,.footer-logo:focus-visible,.hamburger:focus-visible{outline:2px solid var(--gold-light);outline-offset:4px;}
 .nav-cta{
   font-family:'Montserrat',sans-serif;
   font-size:0.65rem!important;letter-spacing:0.25em!important;
@@ -184,8 +196,18 @@ nav.scrolled{
   padding:0 24px;
 }
 .hero-inner::before{
-  content:'CRAFTED IN NAGANO';display:block;margin:0 auto 26px;
+  content:'SITE PREVIEW · NAGANO';display:block;margin:0 auto 26px;
   font-family:'Montserrat',sans-serif;font-size:.58rem;letter-spacing:.55em;color:var(--gold);
+}
+.hero-status{
+  display:inline-flex;align-items:center;justify-content:center;
+  margin:0 auto 18px;padding:7px 12px;
+  border:1px solid rgba(255,255,255,0.32);
+  background:rgba(10,10,10,0.58);
+  color:var(--white);
+  font-family:'Noto Sans JP',sans-serif;
+  font-size:0.68rem;letter-spacing:0.12em;
+  backdrop-filter:blur(8px);
 }
 .hero-label{
   font-family:'Montserrat',sans-serif;
@@ -528,8 +550,7 @@ section{
 .v-card:nth-child(2) .v-perse{background-image:url('assets/images/villa-standard.webp');}
 .v-card:nth-child(3) .v-perse{background-image:url('assets/images/villa-premium.webp');}
 .v-perse svg{display:none;}
-.v-perse::after{content:'完成イメージ';position:absolute;right:12px;bottom:10px;padding:5px 8px;background:rgba(0,0,0,.62);color:rgba(255,255,255,.72);font-size:.58rem;letter-spacing:.14em;}
-.v-perse svg{width:100%;height:100%;position:absolute;inset:0;}
+.v-perse::after{content:'完成イメージ';position:absolute;right:12px;bottom:10px;padding:5px 8px;background:rgba(0,0,0,.72);color:var(--white);font-size:.75rem;letter-spacing:.08em;}
 
 .v-price{
   font-family:'Cormorant Garamond',serif;
@@ -900,12 +921,25 @@ footer{
 }
 .reveal-right.visible{opacity:1;transform:translateX(0);}
 
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto;}
+  .reveal,.reveal-left,.reveal-right{opacity:1;transform:none;transition:none;}
+  .hero-label,.hero-title-line,.hero-sub{opacity:1;transform:none;animation:none;}
+  .cursor,.cursor-ring{display:none;}
+}
+@media(hover:none),(pointer:coarse){
+  .cursor,.cursor-ring{display:none;}
+  .work-overlay{opacity:1;}
+}
+
 /* ============================================================
    MOBILE
    ============================================================ */
 @media(max-width:900px){
   nav{padding:0 20px;}
+  .hero{height:100svh;min-height:620px;}
   .nav-links{display:none;}
+  .nav-links.is-open{display:flex;flex-direction:column;position:fixed;top:76px;left:0;right:0;background:rgba(10,10,10,0.98);padding:32px 24px;border-bottom:1px solid rgba(201,168,76,0.15);gap:24px;z-index:499;backdrop-filter:blur(20px);}
   .hamburger{display:flex;}
   .s-inner,.footer-inner{padding:0 20px;}
   section{padding:80px 0;}
@@ -930,29 +964,31 @@ footer{
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main-content">本文へ移動</a>
 
 <!-- カスタムカーソル -->
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
 <!-- ===== NAV ===== -->
-<nav id="nav">
+<nav id="nav" aria-label="主要ナビゲーション">
   <a class="nav-logo" href="#">
     <div class="nav-logo-main">さつみ建築</div>
-      <span class="nav-logo-sub">Satsumi Kenchiku — Matsumoto, Nagano</span>
+      <span class="nav-logo-sub">Satsumi Kenchiku</span>
   </a>
-  <ul class="nav-links">
+  <ul class="nav-links" id="primary-navigation">
     <li><a href="#features">About</a></li>
     <li><a href="#services">Services</a></li>
     <li><a href="#villa">Villa</a></li>
     <li><a href="#works">Works</a></li>
     <li><a href="#contact" class="nav-cta">Contact</a></li>
   </ul>
-  <button class="hamburger" onclick="toggleMenu()" aria-label="menu">
+  <button class="hamburger" type="button" onclick="toggleMenu()" aria-label="メニューを開く" aria-controls="primary-navigation" aria-expanded="false">
     <span></span><span></span><span></span>
   </button>
 </nav>
 
+<main id="main-content">
 <!-- ===== HERO ===== -->
 <section class="hero">
   <div class="hero-bg" id="heroBg">
@@ -960,6 +996,7 @@ footer{
          background-image: url('your-photo.jpg') を追加してください -->
   </div>
   <div class="hero-inner">
+    <div class="hero-status">Essentia Rise 完成イメージ · 構想中</div>
     <div class="hero-label">Carpentry · Renovation · Small Architecture</div>
     <h1 class="hero-title">
       <span class="hero-title-line">Dream It.</span>
@@ -984,20 +1021,20 @@ footer{
     <div class="features-grid">
       <div class="feat-item reveal">
         <div class="feat-num">— 01</div>
-        <h3 class="feat-title">確かな実績が<br>証明する、職人の技</h3>
-        <p class="feat-text">数百棟を超える施工実績を積み重ね、厳しい品質基準のなかで腕を磨いてきました。その技術を、余計なコストをかけずに直接お届けします。</p>
+        <h3 class="feat-title">使い方から考える、<br>大工の仕事</h3>
+        <p class="feat-text">大工として培った経験をもとに、住まいの状態と使い方を確かめながら、必要な工事を一つずつ考えます。</p>
         <div class="feat-deco">01</div>
       </div>
       <div class="feat-item reveal" style="transition-delay:0.15s">
         <div class="feat-num">— 02</div>
-        <h3 class="feat-title">材料から施工まで<br>一括でお任せ</h3>
-        <p class="feat-text">材工請け対応のため、材料の手配から施工まですべておまかせいただけます。中間業者なしでコストと品質を高いレベルで実現します。</p>
+        <h3 class="feat-title">材料と納まりを<br>一緒に考える</h3>
+        <p class="feat-text">材料の選定から施工まで、工事内容に応じてまとめてご相談いただけます。</p>
         <div class="feat-deco">02</div>
       </div>
       <div class="feat-item reveal" style="transition-delay:0.3s">
         <div class="feat-num">— 03</div>
-        <h3 class="feat-title">現場職人が<br>直接対応</h3>
-        <p class="feat-text">大手リフォーム会社のように中間業者が入りません。ご要望がそのまま現場に伝わるため、細かいこだわりや変更にも柔軟に応えられます。</p>
+        <h3 class="feat-title">現場の条件に合わせて<br>計画する</h3>
+        <p class="feat-text">大工が現場の条件とご希望を伺い、納まりや材料について一緒に考えます。</p>
         <div class="feat-deco">03</div>
       </div>
     </div>
@@ -1069,10 +1106,9 @@ footer{
         <div class="srv-content">
           <div class="srv-title">離れ建築（Villa）</div>
           <div class="srv-tags">
-            <span class="srv-tag">200万〜500万円台</span>
-            <span class="srv-tag">3坪ベース</span>
-            <span class="srv-tag">デッキオプション</span>
-            <span class="srv-tag">自由設計</span>
+            <span class="srv-tag">Essentia Rise 構想</span>
+            <span class="srv-tag">用途から計画</span>
+            <span class="srv-tag">寸法・仕様・価格は未確定</span>
           </div>
         </div>
         <div class="srv-arrow">→</div>
@@ -1099,8 +1135,8 @@ footer{
   <div class="s-inner">
     <div class="reveal">
       <div class="s-label">Works</div>
-      <h2 class="s-title">施工<em>実績</em></h2>
-      <p class="s-desc" style="margin-top:16px;">現在、掲載許可をいただいた施工写真を整理しています。公開まで今しばらくお待ちください。</p>
+      <h2 class="s-title">施工事例の<em>掲載準備</em></h2>
+      <p class="s-desc" style="margin-top:16px;">施工写真と工事内容を確認してから事例を掲載します。現在の表示は写真枠のレイアウト確認用です。</p>
     </div>
     <div class="works-grid reveal" style="transition-delay:0.2s">
       <div class="work-item">
@@ -1110,7 +1146,7 @@ footer{
         </div>
         <div class="work-overlay">
           <div class="work-label">リフォーム施工例</div>
-          <div class="work-sub">Reform — Matsumoto</div>
+          <div class="work-sub">写真・工事情報は掲載前に確認</div>
         </div>
       </div>
       <div class="work-item">
@@ -1120,7 +1156,7 @@ footer{
         </div>
         <div class="work-overlay">
           <div class="work-label">インナーサッシ施工例</div>
-          <div class="work-sub">Window — Azumino</div>
+          <div class="work-sub">写真・工事情報は掲載前に確認</div>
         </div>
       </div>
       <div class="work-item">
@@ -1129,8 +1165,8 @@ footer{
           <div class="photo-placeholder-text">Photo Coming Soon</div>
         </div>
         <div class="work-overlay">
-          <div class="work-label">離れ Villa 施工例</div>
-          <div class="work-sub">Villa — Shiojiri</div>
+          <div class="work-label">小さな建築の掲載枠</div>
+          <div class="work-sub">完成した施工事例ではありません</div>
         </div>
       </div>
     </div>
@@ -1146,7 +1182,7 @@ footer{
         <h2 class="s-title">見えない想いを、<br><em>居場所</em>にする。</h2>
       </div>
       <div class="reveal-right">
-        <p class="s-desc">Essentia Riseは、3坪（約6畳）を基本に、庭や森へ小さな居場所をつくる建築シリーズです。書斎、アトリエ、趣味室、サロン、ゲストルームへ。3つの基本プランから、敷地と使い方に合わせて仕立てます。</p>
+        <p class="s-desc">Essentia Riseは、庭や森に自分らしい居場所をつくる小さな木の建築構想です。書斎、アトリエ、趣味室など、使い方から考えます。下の3案は方向性を比較するための構想で、寸法・仕様・販売条件は検討中です。</p>
       </div>
     </div>
     <div class="villa-cards">
@@ -1156,7 +1192,7 @@ footer{
         <div class="v-series">— Villa Light</div>
         <div class="v-name">ヴィラ ライト</div>
         <div class="v-sub">シンプルに、まず離れが欲しい方へ</div>
-        <div class="v-perse">
+        <div class="v-perse" role="img" aria-label="Villa Light の完成イメージ。実際の建物や確定図面ではありません">
           <svg viewBox="0 0 280 160" xmlns="http://www.w3.org/2000/svg">
             <rect width="280" height="160" fill="#1a1008"/>
             <rect x="60" y="148" width="160" height="10" fill="#2a1a08" rx="1"/>
@@ -1179,25 +1215,23 @@ footer{
             <text x="140" y="155" text-anchor="middle" fill="#C9A84C" font-size="7" font-family="serif" letter-spacing="3" opacity="0.5">LIGHT</text>
           </svg>
         </div>
-        <div class="v-price"><span>税込 </span>200<span>万円〜</span></div>
-        <div class="v-price-note">※ 広さ・仕様により変動します</div>
+        <div class="v-price" style="font-size:1.35rem;line-height:1.5">身軽な趣味の居場所</div>
+        <div class="v-price-note">構想段階・仕様と価格は検討中</div>
         <ul class="v-feats">
-          <li>木造3坪（約6畳）</li>
-          <li>シンプル内装仕上げ</li>
-          <li>採光窓あり</li>
-          <li>電気引込：応相談</li>
-          <li>用途：物置・趣味室・隠れ家</li>
+          <li>趣味や読書に集中したい</li>
+          <li>庭の一角を使いたい</li>
+          <li>必要な設備を一緒に考える</li>
         </ul>
-        <a href="#contact" class="v-btn">このプランで相談する</a>
+        <span class="v-btn" aria-disabled="true" aria-label="プラン詳細は準備中">詳細は準備中</span>
       </div>
 
       <!-- STANDARD -->
       <div class="v-card reveal" style="transition-delay:0.15s">
-        <div class="v-popular">人気プラン</div>
+        <div class="v-popular">プラン構想</div>
         <div class="v-series">— Villa Standard</div>
         <div class="v-name">ヴィラ スタンダード</div>
-        <div class="v-sub">快適さと価格のバランスモデル</div>
-        <div class="v-perse">
+        <div class="v-sub">仕事や創作を想定した構想案</div>
+        <div class="v-perse" role="img" aria-label="Villa Standard の完成イメージ。実際の建物や確定図面ではありません">
           <svg viewBox="0 0 280 160" xmlns="http://www.w3.org/2000/svg">
             <rect width="280" height="160" fill="#0e180e"/>
             <rect x="50" y="148" width="180" height="10" fill="#182218" rx="1"/>
@@ -1224,24 +1258,22 @@ footer{
             <text x="140" y="155" text-anchor="middle" fill="#C9A84C" font-size="7" font-family="serif" letter-spacing="3" opacity="0.5">STANDARD</text>
           </svg>
         </div>
-        <div class="v-price"><span>税込 </span>350<span>万円〜</span></div>
-        <div class="v-price-note">※ 広さ・仕様により変動します</div>
+        <div class="v-price" style="font-size:1.35rem;line-height:1.5">日常に使う仕事と創作の場</div>
+        <div class="v-price-note">構想段階・仕様と価格は検討中</div>
         <ul class="v-feats">
-          <li>木造3坪（約6畳）</li>
-          <li>内装仕上げ（クロス・フロア）</li>
-          <li>電気引込あり・照明付き</li>
-          <li>断熱施工あり・エアコン設置可</li>
-          <li>用途：書斎・アトリエ・ゲストルーム</li>
+          <li>書斎やアトリエとして使いたい</li>
+          <li>季節を通して過ごしたい</li>
+          <li>窓や断熱を用途から考える</li>
         </ul>
-        <a href="#contact" class="v-btn">このプランで相談する</a>
+        <span class="v-btn" aria-disabled="true" aria-label="プラン詳細は準備中">詳細は準備中</span>
       </div>
 
       <!-- PREMIUM -->
       <div class="v-card reveal" style="transition-delay:0.3s">
         <div class="v-series">— Villa Premium</div>
         <div class="v-name">ヴィラ プレミアム</div>
-        <div class="v-sub">デッキ付き、本格的なもう一つの家</div>
-        <div class="v-perse">
+        <div class="v-sub">屋外とのつながりを考える構想案</div>
+        <div class="v-perse" role="img" aria-label="Villa Premium の完成イメージ。実際の建物や確定図面ではありません">
           <svg viewBox="0 0 280 160" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
@@ -1279,21 +1311,19 @@ footer{
             <text x="140" y="155" text-anchor="middle" fill="#C9A84C" font-size="7" font-family="serif" letter-spacing="3" opacity="0.5">PREMIUM</text>
           </svg>
         </div>
-        <div class="v-price"><span>税込 </span>500<span>万円〜</span></div>
-        <div class="v-price-note">※ 広さ・仕様により変動します</div>
+        <div class="v-price" style="font-size:1.35rem;line-height:1.5">屋外とつながる滞在の場</div>
+        <div class="v-price-note">構想段階・仕様と価格は検討中</div>
         <ul class="v-feats">
-          <li>木造3坪＋ウッドデッキ付き</li>
-          <li>高品位内装仕上げ</li>
-          <li>電気・空調完備</li>
-          <li>高断熱・高気密仕様</li>
-          <li>用途：本格離れ・サロン・ゲストハウス</li>
+          <li>デッキと室内を行き来したい</li>
+          <li>人を迎える使い方も考えたい</li>
+          <li>敷地条件から計画を組み立てる</li>
         </ul>
-        <a href="#contact" class="v-btn">このプランで相談する</a>
+        <span class="v-btn" aria-disabled="true" aria-label="プラン詳細は準備中">詳細は準備中</span>
       </div>
 
     </div>
-    <p style="margin-top:24px;font-family:'Montserrat',sans-serif;font-size:0.5rem;letter-spacing:0.15em;color:var(--mid);font-weight:300;" class="reveal">
-      ※ 価格はすべて税込の目安です。敷地の状況・地盤・基礎・電気引込距離・仕様変更などにより変動します。現地確認後に正式なお見積りをご提出します。
+    <p style="margin-top:24px;font-size:0.8rem;line-height:1.7;letter-spacing:0.05em;color:var(--lighter);" class="reveal">
+      ※ 掲載画像は完成イメージです。各案の寸法・設備・法規上の条件・価格は、商品設計を進めながら確定します。
     </p>
   </div>
 </section>
@@ -1309,66 +1339,27 @@ footer{
       <div class="flow-step">
         <div class="flow-num">01</div>
         <div class="flow-title">お問い合わせ</div>
-        <p class="flow-text">フォームまたはお電話から。どんな小さなことでも歓迎です。</p>
+        <p class="flow-text">ご相談内容を伺い、進め方をご案内します。</p>
       </div>
       <div class="flow-step">
         <div class="flow-num">02</div>
         <div class="flow-title">現地確認・ヒアリング</div>
-        <p class="flow-text">実際にお宅に伺い、状況確認と詳しいご要望をお聞きします。</p>
+        <p class="flow-text">現地に伺い、状況とご要望、工事に必要な前提条件を確認します。</p>
       </div>
       <div class="flow-step">
         <div class="flow-num">03</div>
         <div class="flow-title">お見積り提出</div>
-        <p class="flow-text">内容・金額を明確にしたお見積りをご提出。納得いただくまでご相談可能です。</p>
+        <p class="flow-text">工事範囲・金額・前提条件を整理したお見積りをご提出し、内容を確認いただきます。</p>
       </div>
       <div class="flow-step">
         <div class="flow-num">04</div>
         <div class="flow-title">着工・施工</div>
-        <p class="flow-text">丁寧な施工を心がけ、進捗はこまめにご連絡します。</p>
+        <p class="flow-text">確認した工事範囲に沿って施工し、変更が必要な場合は内容を整理して確認します。</p>
       </div>
       <div class="flow-step">
         <div class="flow-num">05</div>
-        <div class="flow-title">お引渡し・アフター</div>
-        <p class="flow-text">完工後も気になる点はいつでもご連絡を。地域密着のアフターフォロー。</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== VOICE ===== -->
-<section class="voice">
-  <div class="s-inner">
-    <div class="reveal">
-      <div class="s-label">Customer Voice</div>
-      <h2 class="s-title">お客様の<em>声</em></h2>
-    </div>
-    <div class="voice-grid">
-      <div class="voice-card reveal">
-        <div class="voice-stars">★★★★★</div>
-        <div class="voice-q">"</div>
-        <p class="voice-text">リフォームをお願いしたのですが、細かい要望もしっかり汲み取っていただけて大満足です。見積もりも明確で追加費用もなく安心でした。</p>
-        <div class="voice-author">
-          <div class="voice-name">K 様</div>
-          <div class="voice-loc">Reform — Matsumoto</div>
-        </div>
-      </div>
-      <div class="voice-card reveal" style="transition-delay:0.15s">
-        <div class="voice-stars">★★★★★</div>
-        <div class="voice-q">"</div>
-        <p class="voice-text">庭に書斎として離れを建てていただきました。想像以上の仕上がりで毎日の作業がとても楽しみになっています。</p>
-        <div class="voice-author">
-          <div class="voice-name">T 様</div>
-          <div class="voice-loc">Villa Standard — Azumino</div>
-        </div>
-      </div>
-      <div class="voice-card reveal" style="transition-delay:0.3s">
-        <div class="voice-stars">★★★★★</div>
-        <div class="voice-q">"</div>
-        <p class="voice-text">現場の方が直接対応してくれるので信頼感が違います。増築後の住み心地が格段に良くなりました。</p>
-        <div class="voice-author">
-          <div class="voice-name">S 様</div>
-          <div class="voice-loc">Extension — Shiojiri</div>
-        </div>
+        <div class="flow-title">お引渡し・確認</div>
+        <p class="flow-text">工事内容を確認してお引渡しします。</p>
       </div>
     </div>
   </div>
@@ -1379,7 +1370,8 @@ footer{
   <div class="s-inner">
     <div class="reveal">
       <div class="s-label">Service Area</div>
-      <h2 class="s-title">対応<em>エリア</em></h2>
+      <h2 class="s-title">活動<em>エリアの候補</em></h2>
+      <p class="s-desc" style="margin-top:16px;">以下は検討中の地域です。正式な対応範囲を示すものではありません。</p>
     </div>
     <div class="area-content">
       <div class="reveal-left">
@@ -1390,11 +1382,11 @@ footer{
           <li>乗鞍（安曇）周辺</li>
           <li>上記周辺地域（要相談）</li>
         </ul>
-        <p class="area-note">地元の気候・風土を知る職人だからこそ、その土地に合った丁寧な仕事ができます。エリア外もお気軽にご相談ください。</p>
+        <p class="area-note">掲載する地域の範囲は正式情報と合わせて確認します。</p>
       </div>
       <div class="area-visual reveal-right">
         <div class="area-visual-label">Service Area</div>
-        <div class="area-visual-name">長野県 中信地域</div>
+        <div class="area-visual-name">エリア候補・確認中</div>
         <div class="area-tags">
           <span class="area-tag">松本</span>
           <span class="area-tag">安曇野</span>
@@ -1411,57 +1403,17 @@ footer{
   <div class="cta-inner">
     <div class="reveal">
       <div class="s-label" style="justify-content:center">Contact</div>
-      <h2 class="cta-title">まずは、<em>お気軽に</em><br>ご相談ください。</h2>
-      <p class="cta-desc">リフォームの相談から離れVillaの見積もりまで、現地確認・お見積りは無料です。どんな小さなことでもお気軽にどうぞ。</p>
+      <h2 class="cta-title">相談の<em>入口</em>を<br>準備しています。</h2>
+      <p class="cta-desc">住まいの改修と、小さな木の居場所づくり。ご相談の入口を準備しています。</p>
     </div>
-    <div class="cta-form reveal" style="transition-delay:0.2s">
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">お名前<span class="req">*</span></label>
-          <input type="text" class="form-input" placeholder="山田 太郎">
-        </div>
-        <div class="form-group">
-          <label class="form-label">電話番号</label>
-          <input type="tel" class="form-input" placeholder="0263-XX-XXXX">
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group full">
-          <label class="form-label">メールアドレス<span class="req">*</span></label>
-          <input type="email" class="form-input" placeholder="example@mail.com">
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group full">
-          <label class="form-label">ご相談内容</label>
-          <select class="form-select">
-            <option value="">選択してください</option>
-            <option>リフォーム・リノベーション</option>
-            <option>設備入替（浴室・キッチンなど）</option>
-            <option>インナーサッシ・断熱改修</option>
-            <option>増築</option>
-            <option>離れ Villa ライト（200万〜）</option>
-            <option>離れ Villa スタンダード（350万〜）</option>
-            <option>離れ Villa プレミアム（500万〜）</option>
-            <option>造作・その他木工事</option>
-            <option>まだ決まっていない</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group full">
-          <label class="form-label">メッセージ</label>
-          <textarea class="form-textarea" placeholder="お気軽にご相談内容をお書きください。"></textarea>
-        </div>
-      </div>
-      <button class="form-submit" type="button" onclick="handleSubmit()">Send Message — 無料相談を申し込む</button>
-      <p class="form-note">
-        ※ いただいた個人情報は施工対応のみに使用し、第三者への提供は一切行いません。<br>
-        ※ 通常2営業日以内にご返信いたします。
-      </p>
+    <div class="cta-form reveal" style="transition-delay:0.2s;text-align:left">
+      <p class="s-label">Coming soon</p>
+      <h3 style="font-family:'Noto Serif JP',serif;font-weight:400;font-size:1.45rem;margin-bottom:16px">相談窓口は公開準備中です</h3>
+      <p class="s-desc">正式な連絡先と受付方法が決まり次第、ここからリフォームとEssentia Riseの相談に進めるようにします。</p>
     </div>
   </div>
 </section>
+</main>
 
 <!-- ===== FOOTER ===== -->
 <footer>
@@ -1472,7 +1424,7 @@ footer{
           <div class="footer-logo-main">さつみ建築</div>
           <span class="footer-logo-sub">Satsumi Kenchiku — Dream It. Build It. Live It.</span>
         </a>
-        <p class="footer-about">長野県中信地域を拠点に活動する大工・薩見文陽が手がける工務店。確かな施工実績と地域密着の誠実な仕事で、あなたの大切な家を守ります。</p>
+        <p class="footer-about">住まいの改修と小さな木の建築について、用途と現場の条件から考えます。所在地・対応地域・施工実績は確認後に正式掲載します。</p>
       </div>
       <div>
         <p class="footer-col-title">Menu</p>
@@ -1487,43 +1439,46 @@ footer{
       </div>
       <div>
         <p class="footer-col-title">Contact</p>
-        <p class="footer-contact-text">代表　薩見 文陽</p>
         <p class="footer-contact-text">連絡先は公開準備中です</p>
-        <p class="footer-contact-text">長野県 中信地域<br>松本市・安曇野市・塩尻市・乗鞍周辺</p>
+        <p class="footer-contact-text">所在地・対応地域は確認後に掲載します</p>
       </div>
     </div>
     <div class="footer-bottom">
-      <span class="footer-copy">© 2025 Satsumi Kenchiku. All Rights Reserved.</span>
+      <span class="footer-copy">© 2026 Satsumi Kenchiku. All Rights Reserved.</span>
       <span class="footer-tagline">Dream It. Build It. Live It.</span>
     </div>
   </div>
 </footer>
 
 <script>
-/* カスタムカーソル */
+/* カスタムカーソル: マウス操作時だけ有効化 */
 const cursor = document.getElementById('cursor');
 const ring = document.getElementById('cursorRing');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{
-  mx=e.clientX;my=e.clientY;
-  cursor.style.left=mx+'px';cursor.style.top=my+'px';
-});
-function animateRing(){
-  rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;
-  ring.style.left=rx+'px';ring.style.top=ry+'px';
-  requestAnimationFrame(animateRing);
+const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+if(finePointer){
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{
+    mx=e.clientX;my=e.clientY;
+    cursor.style.left=mx+'px';cursor.style.top=my+'px';
+    cursor.style.opacity='1';ring.style.opacity='1';
+  });
+  function animateRing(){
+    rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;
+    ring.style.left=rx+'px';ring.style.top=ry+'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+  document.querySelectorAll('a,button,.srv-item,.v-card').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{
+      ring.style.width='60px';ring.style.height='60px';
+      cursor.style.transform='translate(-50%,-50%) scale(0)';
+    });
+    el.addEventListener('mouseleave',()=>{
+      ring.style.width='36px';ring.style.height='36px';
+      cursor.style.transform='translate(-50%,-50%) scale(1)';
+    });
+  });
 }
-animateRing();
-document.querySelectorAll('a,button,.srv-item,.v-card').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{
-    ring.style.width='60px';ring.style.height='60px';
-    cursor.style.transform='translate(-50%,-50%) scale(0)';
-  });
-  el.addEventListener('mouseleave',()=>{
-    ring.style.width='36px';ring.style.height='36px';
-    cursor.style.transform='translate(-50%,-50%) scale(1)';
-  });
-});
 
 /* ナビ スクロール */
 const nav=document.getElementById('nav');
@@ -1532,17 +1487,25 @@ window.addEventListener('scroll',()=>{
 });
 
 /* ハンバーガー */
-let mOpen=false;
+const menuButton=document.querySelector('.hamburger');
+const menuLinks=document.getElementById('primary-navigation');
+function setMenuOpen(open){
+  menuLinks.classList.toggle('is-open',open);
+  menuButton.setAttribute('aria-expanded',String(open));
+  menuButton.setAttribute('aria-label',open?'メニューを閉じる':'メニューを開く');
+}
 function toggleMenu(){
-  mOpen=!mOpen;
-  const nl=document.querySelector('.nav-links');
-  nl.style.cssText=mOpen
-    ?'display:flex;flex-direction:column;position:fixed;top:76px;left:0;right:0;background:rgba(10,10,10,0.98);padding:32px 24px;border-bottom:1px solid rgba(201,168,76,0.15);gap:24px;z-index:499;backdrop-filter:blur(20px);'
-    :'display:none;';
+  setMenuOpen(menuButton.getAttribute('aria-expanded')!=='true');
 }
 document.querySelectorAll('.nav-links a').forEach(a=>{
-  a.addEventListener('click',()=>{if(window.innerWidth<=900){mOpen=false;document.querySelector('.nav-links').style.display='none';}});
+  a.addEventListener('click',()=>{if(window.innerWidth<=900)setMenuOpen(false);});
 });
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&menuButton.getAttribute('aria-expanded')==='true'){
+    setMenuOpen(false);menuButton.focus();
+  }
+});
+window.addEventListener('resize',()=>{if(window.innerWidth>900)setMenuOpen(false);});
 
 /* スクロールアニメーション */
 const observer=new IntersectionObserver(entries=>{
@@ -1553,13 +1516,9 @@ document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>obse
 /* ヒーローパララックス */
 window.addEventListener('scroll',()=>{
   const bg=document.getElementById('heroBg');
-  if(bg) bg.style.transform=`translateY(${window.scrollY*0.4}px)`;
+  if(bg&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches) bg.style.transform=`translateY(${window.scrollY*0.4}px)`;
 });
 
-/* フォーム */
-function handleSubmit(){
-  alert('お問い合わせフォームは現在接続準備中です。\n公開前に正式な送信先へ接続します。');
-}
 </script>
 </body>
 </html>
