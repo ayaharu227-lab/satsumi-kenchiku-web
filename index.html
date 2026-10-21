@@ -60,6 +60,14 @@ body::before{
 ::-webkit-scrollbar-track{background:var(--black);}
 ::-webkit-scrollbar-thumb{background:var(--gold);}
 
+.skip-link{
+  position:fixed;top:8px;left:8px;z-index:10000;
+  padding:10px 14px;background:var(--white);color:var(--black);
+  font-family:'Noto Sans JP',sans-serif;font-size:0.78rem;
+  transform:translateY(-160%);transition:transform 0.2s;
+}
+.skip-link:focus{transform:translateY(0);}
+
 /* ============================================================
    CURSOR
    ============================================================ */
@@ -70,8 +78,9 @@ body::before{
   position:fixed;
   pointer-events:none;
   z-index:9999;
-  transition:transform 0.15s ease;
+  transition:transform 0.15s ease,opacity 0.2s ease;
   transform:translate(-50%,-50%);
+  opacity:0;
 }
 .cursor-ring{
   width:36px;height:36px;
@@ -80,8 +89,9 @@ body::before{
   position:fixed;
   pointer-events:none;
   z-index:9998;
-  transition:transform 0.4s ease,width 0.3s,height 0.3s;
+  transition:transform 0.4s ease,width 0.3s,height 0.3s,opacity 0.2s ease;
   transform:translate(-50%,-50%);
+  opacity:0;
 }
 
 /* ============================================================
@@ -186,8 +196,18 @@ nav.scrolled{
   padding:0 24px;
 }
 .hero-inner::before{
-  content:'CRAFTED IN NAGANO';display:block;margin:0 auto 26px;
+  content:'SITE PREVIEW · NAGANO';display:block;margin:0 auto 26px;
   font-family:'Montserrat',sans-serif;font-size:.58rem;letter-spacing:.55em;color:var(--gold);
+}
+.hero-status{
+  display:inline-flex;align-items:center;justify-content:center;
+  margin:0 auto 18px;padding:7px 12px;
+  border:1px solid rgba(255,255,255,0.32);
+  background:rgba(10,10,10,0.58);
+  color:var(--white);
+  font-family:'Noto Sans JP',sans-serif;
+  font-size:0.68rem;letter-spacing:0.12em;
+  backdrop-filter:blur(8px);
 }
 .hero-label{
   font-family:'Montserrat',sans-serif;
@@ -904,7 +924,12 @@ footer{
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto;}
   .reveal,.reveal-left,.reveal-right{opacity:1;transform:none;transition:none;}
+  .hero-label,.hero-title-line,.hero-sub{opacity:1;transform:none;animation:none;}
   .cursor,.cursor-ring{display:none;}
+}
+@media(hover:none),(pointer:coarse){
+  .cursor,.cursor-ring{display:none;}
+  .work-overlay{opacity:1;}
 }
 
 /* ============================================================
@@ -912,6 +937,7 @@ footer{
    ============================================================ */
 @media(max-width:900px){
   nav{padding:0 20px;}
+  .hero{height:100svh;min-height:620px;}
   .nav-links{display:none;}
   .nav-links.is-open{display:flex;flex-direction:column;position:fixed;top:76px;left:0;right:0;background:rgba(10,10,10,0.98);padding:32px 24px;border-bottom:1px solid rgba(201,168,76,0.15);gap:24px;z-index:499;backdrop-filter:blur(20px);}
   .hamburger{display:flex;}
@@ -938,13 +964,14 @@ footer{
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main-content">本文へ移動</a>
 
 <!-- カスタムカーソル -->
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
 <!-- ===== NAV ===== -->
-<nav id="nav">
+<nav id="nav" aria-label="主要ナビゲーション">
   <a class="nav-logo" href="#">
     <div class="nav-logo-main">さつみ建築</div>
       <span class="nav-logo-sub">Satsumi Kenchiku</span>
@@ -961,6 +988,7 @@ footer{
   </button>
 </nav>
 
+<main id="main-content">
 <!-- ===== HERO ===== -->
 <section class="hero">
   <div class="hero-bg" id="heroBg">
@@ -968,6 +996,7 @@ footer{
          background-image: url('your-photo.jpg') を追加してください -->
   </div>
   <div class="hero-inner">
+    <div class="hero-status">Essentia Rise 完成イメージ · 構想中</div>
     <div class="hero-label">Carpentry · Renovation · Small Architecture</div>
     <h1 class="hero-title">
       <span class="hero-title-line">Dream It.</span>
@@ -1193,7 +1222,7 @@ footer{
           <li>庭の一角を使いたい</li>
           <li>必要な設備を一緒に考える</li>
         </ul>
-        <span class="v-btn" aria-label="プラン詳細は準備中">詳細は準備中</span>
+        <span class="v-btn" aria-disabled="true" aria-label="プラン詳細は準備中">詳細は準備中</span>
       </div>
 
       <!-- STANDARD -->
@@ -1236,7 +1265,7 @@ footer{
           <li>季節を通して過ごしたい</li>
           <li>窓や断熱を用途から考える</li>
         </ul>
-        <span class="v-btn" aria-label="プラン詳細は準備中">詳細は準備中</span>
+        <span class="v-btn" aria-disabled="true" aria-label="プラン詳細は準備中">詳細は準備中</span>
       </div>
 
       <!-- PREMIUM -->
@@ -1289,7 +1318,7 @@ footer{
           <li>人を迎える使い方も考えたい</li>
           <li>敷地条件から計画を組み立てる</li>
         </ul>
-        <span class="v-btn" aria-label="プラン詳細は準備中">詳細は準備中</span>
+        <span class="v-btn" aria-disabled="true" aria-label="プラン詳細は準備中">詳細は準備中</span>
       </div>
 
     </div>
@@ -1315,21 +1344,21 @@ footer{
       <div class="flow-step">
         <div class="flow-num">02</div>
         <div class="flow-title">現地確認・ヒアリング</div>
-        <p class="flow-text">実際にお宅に伺い、状況確認と詳しいご要望をお聞きします。</p>
+        <p class="flow-text">現地に伺い、状況とご要望、工事に必要な前提条件を確認します。</p>
       </div>
       <div class="flow-step">
         <div class="flow-num">03</div>
         <div class="flow-title">お見積り提出</div>
-        <p class="flow-text">内容・金額を明確にしたお見積りをご提出。納得いただくまでご相談可能です。</p>
+        <p class="flow-text">工事範囲・金額・前提条件を整理したお見積りをご提出し、内容を確認いただきます。</p>
       </div>
       <div class="flow-step">
         <div class="flow-num">04</div>
         <div class="flow-title">着工・施工</div>
-        <p class="flow-text">丁寧な施工を心がけ、進捗はこまめにご連絡します。</p>
+        <p class="flow-text">確認した工事範囲に沿って施工し、変更が必要な場合は内容を整理して確認します。</p>
       </div>
       <div class="flow-step">
         <div class="flow-num">05</div>
-        <div class="flow-title">お引渡し・アフター</div>
+        <div class="flow-title">お引渡し・確認</div>
         <p class="flow-text">工事内容を確認してお引渡しします。</p>
       </div>
     </div>
@@ -1384,6 +1413,7 @@ footer{
     </div>
   </div>
 </section>
+</main>
 
 <!-- ===== FOOTER ===== -->
 <footer>
@@ -1421,30 +1451,34 @@ footer{
 </footer>
 
 <script>
-/* カスタムカーソル */
+/* カスタムカーソル: マウス操作時だけ有効化 */
 const cursor = document.getElementById('cursor');
 const ring = document.getElementById('cursorRing');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{
-  mx=e.clientX;my=e.clientY;
-  cursor.style.left=mx+'px';cursor.style.top=my+'px';
-});
-function animateRing(){
-  rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;
-  ring.style.left=rx+'px';ring.style.top=ry+'px';
-  requestAnimationFrame(animateRing);
+const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+if(finePointer){
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{
+    mx=e.clientX;my=e.clientY;
+    cursor.style.left=mx+'px';cursor.style.top=my+'px';
+    cursor.style.opacity='1';ring.style.opacity='1';
+  });
+  function animateRing(){
+    rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;
+    ring.style.left=rx+'px';ring.style.top=ry+'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+  document.querySelectorAll('a,button,.srv-item,.v-card').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{
+      ring.style.width='60px';ring.style.height='60px';
+      cursor.style.transform='translate(-50%,-50%) scale(0)';
+    });
+    el.addEventListener('mouseleave',()=>{
+      ring.style.width='36px';ring.style.height='36px';
+      cursor.style.transform='translate(-50%,-50%) scale(1)';
+    });
+  });
 }
-animateRing();
-document.querySelectorAll('a,button,.srv-item,.v-card').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{
-    ring.style.width='60px';ring.style.height='60px';
-    cursor.style.transform='translate(-50%,-50%) scale(0)';
-  });
-  el.addEventListener('mouseleave',()=>{
-    ring.style.width='36px';ring.style.height='36px';
-    cursor.style.transform='translate(-50%,-50%) scale(1)';
-  });
-});
 
 /* ナビ スクロール */
 const nav=document.getElementById('nav');
